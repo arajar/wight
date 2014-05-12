@@ -178,16 +178,3 @@ prj/vs2013/x86/wight.sln
 prj/vs2013/x86/wight.vcxproj
 prj/vs2013/x86/wight.vcxproj.filters
 release/data/fonts/Sansation.ttf
-release/libsndfile-1.dll
-release/openal32.dll
-release/sfml-audio-2.dll
-release/sfml-audio-d-2.dll
-release/sfml-graphics-2.dll
-release/sfml-graphics-d-2.dll
-release/sfml-network-2.dll
-release/sfml-network-d-2.dll
-release/sfml-system-2.dll
-release/sfml-system-d-2.dll
-release/sfml-window-2.dll
-release/sfml-window-d-2.dll
-release/wightx64_d.exe
