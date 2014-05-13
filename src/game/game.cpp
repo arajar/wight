@@ -61,7 +61,6 @@ void Game::ProcessEvents()
 
 void Game::Update(sf::Time elapsedTime)
 {
-
 }
 
 void Game::Render()

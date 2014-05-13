@@ -42,7 +42,7 @@ project "wight"
 	postbuildcommands
 	{
 		"echo Copying dlls...",
-		"robocopy $(SolutionDir)../../../libs/SFML-2.1/bin/" .. _OPTIONS["arch"] .. "/ $(targetDir) > log.txt",
+		"robocopy $(SolutionDir)../../../libs/SFML-2.1/bin/" .. _OPTIONS["arch"] .. "/ $(targetDir)  /XO /NJH /NP > log.txt",
 		"exit 0",
 	}
 
