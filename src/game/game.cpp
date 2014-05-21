@@ -1,25 +1,34 @@
+#include "pch.h"
 #include "game.h"
-//#include <Book/StringHelpers.hpp>
+
+//////////////////////////////////////////////////////////////////////////
 
 const sf::Time Game::s_timePerFrame = sf::seconds(1.f / 60.f);
 
+//////////////////////////////////////////////////////////////////////////
+
 Game::Game()
-: m_window(sf::VideoMode(640, 480), "wight", sf::Style::Close)
-, m_font()
-, m_statisticsText()
-, m_statisticsUpdateTime()
-, m_statisticsNumFrames(0)
+	: m_window(sf::VideoMode(640, 480), "wight", sf::Style::Close | sf::Style::Resize)
+	, m_font()
+	, m_statisticsText()
+	, m_statisticsUpdateTime()
+	, m_statisticsNumFrames(0)
 {
-	m_font.loadFromFile("data/fonts/Sansation.ttf");
+	m_window.setFramerateLimit(60);
+
+	m_font.loadFromFile("data/fonts/sansation.ttf");
 	m_statisticsText.setFont(m_font);
 	m_statisticsText.setPosition(5.f, 5.f);
 	m_statisticsText.setCharacterSize(14);
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void Game::Run()
 {
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
+	
 	while (m_window.isOpen())
 	{
 		sf::Time elapsedTime = clock.restart();
@@ -36,6 +45,8 @@ void Game::Run()
 		Render();
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void Game::ProcessEvents()
 {
@@ -59,9 +70,13 @@ void Game::ProcessEvents()
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void Game::Update(sf::Time elapsedTime)
 {
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void Game::Render()
 {
@@ -69,6 +84,8 @@ void Game::Render()
 	m_window.draw(m_statisticsText);
 	m_window.display();
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void Game::UpdateStatistics(sf::Time elapsedTime)
 {
@@ -86,7 +103,10 @@ void Game::UpdateStatistics(sf::Time elapsedTime)
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void Game::HandleInput(sf::Keyboard::Key key, bool isPressed)
 {
-
 }
+
+//////////////////////////////////////////////////////////////////////////

@@ -18,13 +18,13 @@ project "wight"
 
 	files 
 	{
-		 "../src/**",
-		 "../include/**",
+		"../src/**",
 	}
 
 	includedirs 
-	{ 
-		"../include/", 
+	{
+		"../src/",
+		"../src/**",
 		"../libs/glm/glm/",
 		"../libs/SFML-2.1/include",
 	}
@@ -46,12 +46,16 @@ project "wight"
 		"exit 0",
 	}
 
+	pchheader "pch.h"
+	pchsource "../src/pch.cpp"
+
 	configuration "Debug"
 		flags( "NoExceptions" )
 		targetname( "wight" .. _OPTIONS["arch"] .. "_d" )
 
 		links 
 		{
+			"opengl32.lib",
 			"sfml-graphics-d.lib",
 			"sfml-window-d.lib",
 			"sfml-system-d.lib",
@@ -62,6 +66,7 @@ project "wight"
 		targetname( "wight" .. _OPTIONS["arch"])
 		links 
 		{
+			"opengl32.lib",
 			"sfml-graphics.lib",
 			"sfml-window.lib",
 			"sfml-system.lib",
