@@ -1,5 +1,7 @@
 #pragma once
 
+//////////////////////////////////////////////////////////////////////////
+
 struct Wall
 {
 	Wall(sf::Vector2f p1, sf::Vector2f p2)
@@ -8,12 +10,12 @@ struct Wall
 		pt2 = p2;
 	}
 
-	// Pt1 et Pt2 sont les deux extrémités du mur
 	sf::Vector2f pt1;
 	sf::Vector2f pt2;
 };
 
-// WallEntity est une variable qui permet de représenter dans le programme un mur
+//////////////////////////////////////////////////////////////////////////
+
 struct WallEntity
 {
 	WallEntity(int id)
@@ -28,11 +30,26 @@ private:
 	int m_ID;
 };
 
+//////////////////////////////////////////////////////////////////////////
+
 enum class LightType
 {
-	STATIC,
-	DYNAMIC,
+	OMNI,
+	SPOT,
 };
+
+//////////////////////////////////////////////////////////////////////////
+
+enum class LightQuality
+{
+	ULTRA = 10,
+	GOOD = 8,
+	FAIR = 6,
+	LOW = 4,
+	LOWEST = 2,
+};
+
+//////////////////////////////////////////////////////////////////////////
 
 // Interface for Lights
 class ILight
@@ -41,59 +58,72 @@ public:
 	virtual ~ILight() {}
 
 public:
+	virtual void Render(sf::RenderTarget* rt) = 0;
+
+public:
 	virtual void SetPosition(const sf::Vector2f& pos) = 0;
 	virtual void SetColor(const sf::Color& color) = 0;
+	virtual void SetQuality(LightQuality quality) = 0;
 	virtual void SetIntensity(float intensity) = 0;
+	virtual void SetRadius(float radius) = 0;
+
+	virtual const sf::Vector2f& GetPosition() const = 0;
+	virtual const sf::Color& GetColor() const = 0;
+	virtual LightQuality GetQuality() const = 0;
+	virtual float GetIntensity() const = 0;
+	virtual float GetRadius() const = 0;
+
+	virtual LightType GetType() const = 0;
+
+	virtual void SetActive(bool active) = 0;
+	virtual bool IsActive() = 0;
+
+public:
+	virtual void Generate(std::vector<Wall> walls) = 0;
+
 };
 
-class Light
+//////////////////////////////////////////////////////////////////////////
+
+class LightBase : public ILight
 {
 public:
-	Light();
-	Light(sf::Vector2f position, float intensity, float radius, int quality, sf::Color color);
-	~Light();
+	LightBase();
+	virtual ~LightBase();
 
-	void Draw(sf::RenderTarget* rt);
-	
-	virtual void Generate(std::vector <Wall> &m_wall);
-	void AddTriangle(sf::Vector2f pt1, sf::Vector2f pt2, int minimum_wall, std::vector <Wall> &m_wall);
+public:
+	virtual void Render(sf::RenderTarget* rt) override;
 
-	void SetIntensity(float);
-	void SetRadius(float);
-	void SetQuality(int);
-	void SetColor(sf::Color);
-	void SetPosition(sf::Vector2f);
+public:
+	virtual void SetPosition(const sf::Vector2f& pos) override;
+	virtual void SetColor(const sf::Color& color) override;
+	virtual void SetQuality(LightQuality quality) override;
+	virtual void SetIntensity(float intensity) override;
+	virtual void SetRadius(float radius) override;
 
-	virtual void SetOtherParameter(unsigned, float);
+	virtual const sf::Vector2f& GetPosition() const override;
+	virtual const sf::Color& GetColor() const override;
+	virtual LightQuality GetQuality() const override;
+	virtual float GetIntensity() const override;
+	virtual float GetRadius() const override;
 
-	// Retourner différents attributs de la lumière
-	float GetIntensity();
-	float GetRadius();
-	int GetQuality();
-	sf::Color GetColor();
-	sf::Vector2f GetPosition();
-
-	// Une petite bool pour savoir si la lumière est allumée ou éteinte
-	bool m_active;
+	virtual void SetActive(bool active) override;
+	virtual bool IsActive() override;
 
 protected:
-	//Position à l'écran
-	sf::Vector2f m_position;
-	//Intensité, gère la transparence ( entre 0 et 255 )
-	float m_intensity;
-	//Rayon de la lumière
-	float m_radius;
-	//Couleur de la lumière
-	sf::Color m_color;
+	virtual void AddTriangle(sf::Vector2f point1, sf::Vector2f point2, int minWall, std::vector<Wall>& walls);
 
+protected:
+	sf::Vector2f					m_position;
+	sf::Color						m_color;
+	LightQuality					m_quality;
 
-	//Tableau dynamique de Shape, ce sont ces shapes de type triangle qui compose la lumière
-	std::vector <sf::VertexArray> m_shape;
+	float							m_intensity;
+	float							m_radius;
 
-private:
+	bool							m_active;
 
-	//Qualité de la lumière, c'est à dire le nombre de triangles par défaut qui la compose.
-	int m_quality;
+	std::vector<sf::VertexArray>	m_shape;
 };
 
-using LightPtr = std::shared_ptr < Light > ;
+//////////////////////////////////////////////////////////////////////////
