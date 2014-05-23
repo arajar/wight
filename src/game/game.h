@@ -1,15 +1,17 @@
 #pragma once
 
+#include "Screens/Screen.h"
+
 //////////////////////////////////////////////////////////////////////////
 
-class Game : private sf::NonCopyable
+class Game : public w::Screen, private sf::NonCopyable
 {
 public:
 	Game();
 	virtual ~Game() {};
 
 public:
-	void	Run();
+	virtual void Run() override;
 
 private:
 	void	ProcessEvents();
@@ -28,6 +30,10 @@ private:
 	sf::Time				m_statisticsUpdateTime;
 
 	std::size_t				m_statisticsNumFrames;
+
+	sf::Clock				m_clock;
+	sf::Time				m_timeSinceLastUpdate;
+
 };
 
 //////////////////////////////////////////////////////////////////////////

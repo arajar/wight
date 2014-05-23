@@ -4,11 +4,7 @@
 
 int main(int argc, char** argv)
 {
-	//	Game game;
-	//	game.Run();
-	//	return 0;
-
-	sf::RenderWindow App(sf::VideoMode(800, 600, 32), "Holyspirit Light Test");
+	sf::RenderWindow App(sf::VideoMode(800, 600, 32), "wight");
 
 	sf::Clock Clock;
 
@@ -24,7 +20,7 @@ int main(int argc, char** argv)
 
 	new LightManager();
 
-	LightManager::GetInstance()->SetGlobalAmbientColor(sf::Color(128, 128, 128));
+	LightManager::GetInstance()->SetGlobalAmbientColor(sf::Color(0, 0, 0));
 
 	/*LightManager::GetInstance()->AddWall(sf::Vector2f(450, 325), sf::Vector2f(300, 200));
 	LightManager::GetInstance()->AddWall(sf::Vector2f(250, 240), sf::Vector2f(400, 365));
@@ -40,14 +36,25 @@ int main(int argc, char** argv)
 	LightManager::GetInstance()->AddWall(sf::Vector2f(400, 400), sf::Vector2f(400, 200));
 	*/
 	
-	SpotLight* spot = new SpotLight();
-	spot->SetPosition(sf::Vector2f(375, 275));
-	spot->SetIntensity(255.f);
-	spot->SetRadius(128.f);
-	spot->SetQuality(LightQuality::ULTRA);
-	spot->SetColor(sf::Color::Blue);
+	OmniLight* light = new OmniLight();
+	light->SetPosition(sf::Vector2f(375, 275));
+	light->SetIntensity(255.f);
+	light->SetRadius(128.f);
+	light->SetQuality(LightQuality::LOW);
+	light->SetColor(sf::Color::White);
 
-	LightManager::GetInstance()->AddLight(spot);
+	LightManager::GetInstance()->AddLight(light);
+
+	SpotLight* light2 = new SpotLight();
+	light2->SetPosition(sf::Vector2f(375, 275));
+	light2->SetIntensity(255.f);
+	light2->SetRadius(255.f);
+	light2->SetQuality(LightQuality::LOWEST);
+	light2->SetColor(sf::Color::White);
+	light2->SetAngle(0.f);
+	light2->SetOpeningAngle(35.f);
+
+	LightManager::GetInstance()->AddLight(light2);
 
 	sf::Texture Image;
 	Image.loadFromFile("data/test.png");
@@ -80,11 +87,13 @@ int main(int argc, char** argv)
 			LightRefresh = 0;
 		}
 
+		light->SetPosition(sf::Vector2f((float)sf::Mouse::getPosition(App).x, (float)sf::Mouse::getPosition(App).y));
+
 		App.clear();
 
 		App.draw(background);
 
-		App.draw(Wall, 10, sf::Lines);
+		//App.draw(Wall, 10, sf::Lines);
 
 		LightManager::GetInstance()->Render(&App);
 

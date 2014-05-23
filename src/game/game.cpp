@@ -13,6 +13,7 @@ Game::Game()
 	, m_statisticsText()
 	, m_statisticsUpdateTime()
 	, m_statisticsNumFrames(0)
+	, m_timeSinceLastUpdate(sf::Time::Zero)
 {
 	m_window.setFramerateLimit(60);
 
@@ -26,24 +27,18 @@ Game::Game()
 
 void Game::Run()
 {
-	sf::Clock clock;
-	sf::Time timeSinceLastUpdate = sf::Time::Zero;
-	
-	while (m_window.isOpen())
+	sf::Time elapsedTime = m_clock.restart();
+	m_timeSinceLastUpdate += elapsedTime;
+	while (m_timeSinceLastUpdate > s_timePerFrame)
 	{
-		sf::Time elapsedTime = clock.restart();
-		timeSinceLastUpdate += elapsedTime;
-		while (timeSinceLastUpdate > s_timePerFrame)
-		{
-			timeSinceLastUpdate -= s_timePerFrame;
+		m_timeSinceLastUpdate -= s_timePerFrame;
 
-			ProcessEvents();
-			Update(s_timePerFrame);
-		}
-
-		UpdateStatistics(elapsedTime);
-		Render();
+		ProcessEvents();
+		Update(s_timePerFrame);
 	}
+
+	UpdateStatistics(elapsedTime);
+	Render();
 }
 
 //////////////////////////////////////////////////////////////////////////

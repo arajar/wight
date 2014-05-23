@@ -49,6 +49,8 @@ project "wight"
 	pchheader "pch.h"
 	pchsource "../src/pch.cpp"
 
+	debugdir("$(TargetDir)")
+
 	configuration "Debug"
 		flags( "NoExceptions" )
 		targetname( "wight" .. _OPTIONS["arch"] .. "_d" )
